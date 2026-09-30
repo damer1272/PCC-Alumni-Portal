@@ -25,7 +25,7 @@ export default function AdminDashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All");
 
-  useEffect(() => {
+  const loadDashboardData = () => {
     Promise.all([
       storageService.getAlumni(),
       storageService.getBatchGraduateFiles(),
@@ -33,6 +33,16 @@ export default function AdminDashboard() {
       setAlumniList(alumni);
       setBatchFiles(files);
     });
+  };
+
+  useEffect(() => {
+    loadDashboardData();
+    const interval = setInterval(loadDashboardData, 5000);
+    window.addEventListener("focus", loadDashboardData);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("focus", loadDashboardData);
+    };
   }, []);
 
   const total = alumniList.length;

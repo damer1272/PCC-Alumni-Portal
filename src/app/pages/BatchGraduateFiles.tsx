@@ -135,6 +135,21 @@ export default function BatchGraduateFiles() {
 
   useEffect(() => {
     loadFiles();
+
+    // Auto-poll Supabase every 5s to sync batch document uploads across all devices automatically
+    const interval = setInterval(() => {
+      loadFiles();
+    }, 5000);
+
+    const handleFocus = () => {
+      loadFiles();
+    };
+    window.addEventListener("focus", handleFocus);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("focus", handleFocus);
+    };
   }, []);
 
   // Download official Excel / CSV template

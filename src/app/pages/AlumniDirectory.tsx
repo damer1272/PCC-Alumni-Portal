@@ -31,9 +31,19 @@ export default function AlumniDirectory() {
   const [filterStatus, setFilterStatus] = useState("");
   const [showFilters, setShowFilters] = useState(false);
 
-  useEffect(() => {
+  const loadDirectoryData = () => {
     storageService.getAlumni().then(setAlumniList);
     storageService.getProfile().then(setCurrentProfile);
+  };
+
+  useEffect(() => {
+    loadDirectoryData();
+    const interval = setInterval(loadDirectoryData, 5000);
+    window.addEventListener("focus", loadDirectoryData);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("focus", loadDirectoryData);
+    };
   }, []);
 
   const filtered = alumniList.filter((a) => {

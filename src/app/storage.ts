@@ -538,6 +538,26 @@ export const storageService = {
 
   // ANNOUNCEMENTS CRUD
   async getAnnouncements(): Promise<Announcement[]> {
+    if (isSupabaseConfigured() && supabase) {
+      try {
+        const { data, error } = await supabase.from("announcements").select("*").order("created_at", { ascending: false });
+        if (!error && data) {
+          const list = data.map((d: any) => ({
+            id: isNaN(Number(d.id)) ? Date.now() : Number(d.id),
+            title: d.title,
+            category: d.category,
+            date: d.date,
+            createdBy: d.created_by,
+            content: d.content,
+            priority: d.priority,
+          }));
+          localStorage.setItem(KEYS.ANNOUNCEMENTS, JSON.stringify(list));
+          return list;
+        }
+      } catch (err) {
+        console.warn("Supabase getAnnouncements error:", err);
+      }
+    }
     const data = localStorage.getItem(KEYS.ANNOUNCEMENTS);
     return data ? JSON.parse(data) : ANNOUNCEMENTS;
   },
@@ -548,12 +568,45 @@ export const storageService = {
       ...announcement,
       id: Date.now(),
     };
+
+    if (isSupabaseConfigured() && supabase) {
+      try {
+        await supabase.from("announcements").insert({
+          id: String(newAnnouncement.id),
+          title: newAnnouncement.title,
+          category: newAnnouncement.category,
+          date: newAnnouncement.date,
+          created_by: newAnnouncement.createdBy,
+          content: newAnnouncement.content,
+          priority: newAnnouncement.priority || "normal",
+        });
+      } catch (err) {
+        console.warn("Supabase addAnnouncement error:", err);
+      }
+    }
+
     list.unshift(newAnnouncement);
     localStorage.setItem(KEYS.ANNOUNCEMENTS, JSON.stringify(list));
     return newAnnouncement;
   },
 
   async updateAnnouncement(id: number, updates: Partial<Announcement>): Promise<Announcement | null> {
+    if (isSupabaseConfigured() && supabase) {
+      try {
+        const payload: any = {};
+        if (updates.title !== undefined) payload.title = updates.title;
+        if (updates.category !== undefined) payload.category = updates.category;
+        if (updates.date !== undefined) payload.date = updates.date;
+        if (updates.createdBy !== undefined) payload.created_by = updates.createdBy;
+        if (updates.content !== undefined) payload.content = updates.content;
+        if (updates.priority !== undefined) payload.priority = updates.priority;
+
+        await supabase.from("announcements").update(payload).eq("id", String(id));
+      } catch (err) {
+        console.warn("Supabase updateAnnouncement error:", err);
+      }
+    }
+
     const list = await this.getAnnouncements();
     const index = list.findIndex((a) => a.id === id);
     if (index === -1) return null;
@@ -563,6 +616,14 @@ export const storageService = {
   },
 
   async deleteAnnouncement(id: number): Promise<boolean> {
+    if (isSupabaseConfigured() && supabase) {
+      try {
+        await supabase.from("announcements").delete().eq("id", String(id));
+      } catch (err) {
+        console.warn("Supabase deleteAnnouncement error:", err);
+      }
+    }
+
     const list = await this.getAnnouncements();
     const filtered = list.filter((a) => a.id !== id);
     localStorage.setItem(KEYS.ANNOUNCEMENTS, JSON.stringify(filtered));
