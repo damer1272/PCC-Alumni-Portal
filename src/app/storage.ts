@@ -497,7 +497,7 @@ export const storageService = {
 
     if (isSupabaseConfigured() && supabase) {
       try {
-        await supabase.from("batch_documents").insert({
+        const { error } = await supabase.from("batch_documents").insert({
           id: newDoc.id,
           file_name: newDoc.fileName,
           batch_year: newDoc.batchYear,
@@ -508,6 +508,9 @@ export const storageService = {
           course_counts: newDoc.courseCounts,
           description: newDoc.description,
         });
+        if (error) {
+          console.error("Supabase batch_documents insert error:", error);
+        }
       } catch (err) {
         console.warn("Supabase addBatchGraduateFile error:", err);
       }
