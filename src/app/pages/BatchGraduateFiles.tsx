@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import * as XLSX from "xlsx";
 import { storageService, BatchGraduateFile } from "../storage";
+import { Alumni } from "../data";
 import { toast } from "sonner";
 
 const DEFAULT_CSV_CONTENT = `Student ID,Full Name,Course,Batch Year
@@ -158,6 +159,7 @@ export default function BatchGraduateFiles() {
 
     const courseCounts: Record<string, number> = {};
     let totalCount = 0;
+    const parsedGraduates: Partial<Alumni>[] = [];
 
     // Find header row index
     let headerIdx = 0;
@@ -169,14 +171,20 @@ export default function BatchGraduateFiles() {
       }
     }
 
-    // Find course column index if available
-    let courseColIdx = -1;
     const headerRow = Array.isArray(rawRows[headerIdx]) ? rawRows[headerIdx] : [];
+    
+    // Find column indexes
+    let idColIdx = -1;
+    let nameColIdx = -1;
+    let courseColIdx = -1;
+    let yearColIdx = -1;
+
     headerRow.forEach((cellVal: any, idx: number) => {
-      const valStr = String(cellVal || "").toLowerCase();
-      if (valStr.includes("course") || valStr.includes("program") || valStr.includes("degree")) {
-        courseColIdx = idx;
-      }
+      const valStr = String(cellVal || "").toLowerCase().trim();
+      if (valStr.includes("id") || valStr.includes("student")) idColIdx = idx;
+      else if (valStr.includes("name") || valStr.includes("full")) nameColIdx = idx;
+      else if (valStr.includes("course") || valStr.includes("program") || valStr.includes("degree")) courseColIdx = idx;
+      else if (valStr.includes("year") || valStr.includes("batch")) yearColIdx = idx;
     });
 
     // Process data rows
@@ -185,13 +193,10 @@ export default function BatchGraduateFiles() {
       if (row.length === 0) continue;
 
       let foundCourse: string | null = null;
-
-      // 1. Check specified course column
       if (courseColIdx !== -1 && row[courseColIdx] !== undefined) {
         foundCourse = identifyCourse(row[courseColIdx]);
       }
 
-      // 2. If not found, scan all cells in the row
       if (!foundCourse) {
         for (const cell of row) {
           const candidate = identifyCourse(cell);
@@ -202,16 +207,28 @@ export default function BatchGraduateFiles() {
         }
       }
 
-      if (foundCourse) {
-        courseCounts[foundCourse] = (courseCounts[foundCourse] || 0) + 1;
+      const studentIdVal = idColIdx !== -1 && row[idColIdx] !== undefined ? String(row[idColIdx]).trim() : "";
+      const nameVal = nameColIdx !== -1 && row[nameColIdx] !== undefined ? String(row[nameColIdx]).trim() : "";
+      const yearVal = yearColIdx !== -1 && row[yearColIdx] !== undefined ? parseInt(String(row[yearColIdx]), 10) : Number(selectedYear);
+
+      const hasData = studentIdVal || nameVal || foundCourse || row.some((cell: any) => String(cell || "").trim().length > 1);
+
+      if (hasData) {
+        const finalCourse = foundCourse || "BSIT";
+        courseCounts[finalCourse] = (courseCounts[finalCourse] || 0) + 1;
         totalCount++;
-      } else {
-        // Check if row has data (e.g. Student ID or Name) but course was unspecified
-        const hasData = row.some((cell: any) => String(cell || "").trim().length > 1);
-        if (hasData) {
-          courseCounts["BSIT"] = (courseCounts["BSIT"] || 0) + 1;
-          totalCount++;
-        }
+
+        const cleanName = nameVal || `Graduate ${i}`;
+        const cleanEmail = `${cleanName.toLowerCase().replace(/[^a-z0-9]/g, ".")}@pcc.edu.ph`;
+        parsedGraduates.push({
+          studentId: studentIdVal || `2026-${String(100 + i).padStart(4, "0")}`,
+          name: cleanName,
+          course: finalCourse,
+          year: isNaN(yearVal) ? Number(selectedYear) : yearVal,
+          email: cleanEmail,
+          status: "Active",
+          employmentStatus: "Employed",
+        });
       }
     }
 
@@ -220,6 +237,7 @@ export default function BatchGraduateFiles() {
       return;
     }
 
+    // 1. Add Batch Document Record to database & local storage
     await storageService.addBatchGraduateFile({
       fileName,
       batchYear: Number(selectedYear),
@@ -231,8 +249,15 @@ export default function BatchGraduateFiles() {
       description: description.trim() || `Official graduate roster file for Class of ${selectedYear}.`,
     });
 
+    // 2. Import parsed graduates into Alumni Directory & Database!
+    let importMsg = "";
+    if (parsedGraduates.length > 0) {
+      const importRes = await storageService.batchImportAlumni(parsedGraduates);
+      importMsg = ` Registered ${importRes.totalProcessed} graduates to the Alumni Directory database.`;
+    }
+
     toast.success(
-      `Successfully processed ${fileName}! Counted ${totalCount} graduates across ${Object.keys(courseCounts).length} courses. Dashboard metrics updated (No profiles generated).`
+      `Successfully processed ${fileName}! Recorded ${totalCount} graduates across ${Object.keys(courseCounts).length} courses.${importMsg}`
     );
 
     setDescription("");
@@ -328,7 +353,7 @@ export default function BatchGraduateFiles() {
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Batch Graduate Document Files</h1>
             <p className="text-blue-100/80 text-xs sm:text-sm mt-1 max-w-2xl">
-              Store official batch graduate spreadsheets per course to populate course total analytics on the Admin Dashboard without generating individual user profiles.
+              Store official batch graduate spreadsheets per course to populate course total analytics and populate alumni directory records in your live Supabase database.
             </p>
           </div>
 
@@ -348,9 +373,9 @@ export default function BatchGraduateFiles() {
       <div className="bg-amber-50 border border-amber-200/80 rounded-2xl p-4 sm:p-5 flex items-start gap-3.5 text-amber-900 shadow-2xs">
         <ShieldAlert className="w-5 h-5 text-[#FF8A3D] flex-shrink-0 mt-0.5" />
         <div className="text-xs space-y-1">
-          <p className="font-bold text-amber-950 text-sm">Dashboard Analytics Mode (No Profile Generation)</p>
+          <p className="font-bold text-amber-950 text-sm">Live Supabase Database Synchronization</p>
           <p className="text-amber-900/90 leading-relaxed font-medium">
-            Files stored in this section are parsed with Excel support (.XLSX, .XLS, .CSV) to extract <strong>graduates count per course</strong> for dashboard charts. Uploading batch files will <strong>NOT</strong> create active alumni user accounts or public directory profiles.
+            Files uploaded here (.XLSX, .XLS, .CSV) are parsed to extract <strong>graduates count per course</strong> and automatically save document records and graduate entries directly into your <strong>Supabase live database</strong>.
           </p>
         </div>
       </div>

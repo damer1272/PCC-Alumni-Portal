@@ -346,7 +346,10 @@ export const storageService = {
     let updatedCount = 0;
     const now = Date.now();
 
-    graduates.forEach((item, idx) => {
+    const supabaseInserts: any[] = [];
+
+    for (let idx = 0; idx < graduates.length; idx++) {
+      const item = graduates[idx];
       const cleanStudentId = (item.studentId || "").trim();
       const cleanEmail = (item.email || "").trim().toLowerCase();
 
@@ -380,6 +383,24 @@ export const storageService = {
           saying: item.saying !== undefined ? item.saying : list[existingIdx].saying,
         };
         updatedCount++;
+
+        if (isSupabaseConfigured() && supabase) {
+          try {
+            await supabase.from("alumni_directory").update({
+              name: list[existingIdx].name,
+              student_id: list[existingIdx].studentId,
+              course: list[existingIdx].course,
+              year: list[existingIdx].year,
+              email: list[existingIdx].email,
+              company: list[existingIdx].company || "",
+              position: list[existingIdx].position || "",
+              location: list[existingIdx].location || "",
+              saying: list[existingIdx].saying || "",
+            }).eq("id", list[existingIdx].id);
+          } catch (err) {
+            console.warn("Supabase update error during batch import:", err);
+          }
+        }
       } else {
         const newAlumnus: Alumni = {
           id: now + idx,
@@ -401,8 +422,37 @@ export const storageService = {
         };
         list.unshift(newAlumnus);
         addedCount++;
+
+        if (isSupabaseConfigured() && supabase) {
+          supabaseInserts.push({
+            id: newAlumnus.id,
+            name: newAlumnus.name,
+            student_id: newAlumnus.studentId,
+            gender: newAlumnus.gender || "Not specified",
+            course: newAlumnus.course,
+            year: newAlumnus.year,
+            email: newAlumnus.email,
+            phone: newAlumnus.phone || "",
+            address: newAlumnus.address || "",
+            company: newAlumnus.company || "",
+            position: newAlumnus.position || "",
+            location: newAlumnus.location || "",
+            employment_status: newAlumnus.employmentStatus || "Employed",
+            status: newAlumnus.status || "Active",
+            avatar: newAlumnus.avatar || "AL",
+            saying: newAlumnus.saying || "",
+          });
+        }
       }
-    });
+    }
+
+    if (isSupabaseConfigured() && supabase && supabaseInserts.length > 0) {
+      try {
+        await supabase.from("alumni_directory").insert(supabaseInserts);
+      } catch (err) {
+        console.warn("Supabase batch insert error:", err);
+      }
+    }
 
     localStorage.setItem(KEYS.ALUMNI, JSON.stringify(list));
     return { addedCount, updatedCount, totalProcessed: graduates.length };
@@ -410,6 +460,26 @@ export const storageService = {
 
   // BATCH GRADUATE FILES CRUD
   async getBatchGraduateFiles(): Promise<BatchGraduateFile[]> {
+    if (isSupabaseConfigured() && supabase) {
+      try {
+        const { data, error } = await supabase.from("batch_documents").select("*").order("created_at", { ascending: false });
+        if (!error && data && data.length > 0) {
+          return data.map((d: any) => ({
+            id: d.id,
+            fileName: d.file_name,
+            batchYear: d.batch_year,
+            uploadDate: d.upload_date,
+            uploadedBy: d.uploaded_by,
+            fileSize: d.file_size,
+            totalGraduates: d.total_graduates,
+            courseCounts: d.course_counts || {},
+            description: d.description,
+          }));
+        }
+      } catch (err) {
+        console.warn("Supabase getBatchGraduateFiles error:", err);
+      }
+    }
     const data = localStorage.getItem(KEYS.BATCH_DOCUMENTS);
     return data ? JSON.parse(data) : INITIAL_BATCH_DOCUMENTS;
   },
@@ -420,12 +490,39 @@ export const storageService = {
       ...doc,
       id: `batch-${Date.now()}`,
     };
+
+    if (isSupabaseConfigured() && supabase) {
+      try {
+        await supabase.from("batch_documents").insert({
+          id: newDoc.id,
+          file_name: newDoc.fileName,
+          batch_year: newDoc.batchYear,
+          upload_date: newDoc.uploadDate,
+          uploaded_by: newDoc.uploadedBy,
+          file_size: newDoc.fileSize,
+          total_graduates: newDoc.totalGraduates,
+          course_counts: newDoc.courseCounts,
+          description: newDoc.description,
+        });
+      } catch (err) {
+        console.warn("Supabase addBatchGraduateFile error:", err);
+      }
+    }
+
     list.unshift(newDoc);
     localStorage.setItem(KEYS.BATCH_DOCUMENTS, JSON.stringify(list));
     return newDoc;
   },
 
   async deleteBatchGraduateFile(id: string): Promise<boolean> {
+    if (isSupabaseConfigured() && supabase) {
+      try {
+        await supabase.from("batch_documents").delete().eq("id", id);
+      } catch (err) {
+        console.warn("Supabase deleteBatchGraduateFile error:", err);
+      }
+    }
+
     const list = await this.getBatchGraduateFiles();
     const filtered = list.filter((d) => d.id !== id);
     localStorage.setItem(KEYS.BATCH_DOCUMENTS, JSON.stringify(filtered));
