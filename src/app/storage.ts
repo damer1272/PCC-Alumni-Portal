@@ -219,8 +219,8 @@ export const storageService = {
     if (isSupabaseConfigured() && supabase) {
       try {
         const { data, error } = await supabase.from("alumni_directory").select("*").order("created_at", { ascending: false });
-        if (!error && data && data.length > 0) {
-          return data.map((d: any) => ({
+        if (!error && data) {
+          const list = data.map((d: any) => ({
             id: d.id,
             name: d.name,
             studentId: d.student_id,
@@ -243,6 +243,8 @@ export const storageService = {
             facebook: d.facebook,
             instagram: d.instagram,
           }));
+          localStorage.setItem(KEYS.ALUMNI, JSON.stringify(list));
+          return list;
         }
       } catch (err) {
         console.warn("Supabase getAlumni error, using local fallback:", err);
@@ -463,8 +465,8 @@ export const storageService = {
     if (isSupabaseConfigured() && supabase) {
       try {
         const { data, error } = await supabase.from("batch_documents").select("*").order("created_at", { ascending: false });
-        if (!error && data && data.length > 0) {
-          return data.map((d: any) => ({
+        if (!error && data) {
+          const list = data.map((d: any) => ({
             id: d.id,
             fileName: d.file_name,
             batchYear: d.batch_year,
@@ -475,6 +477,8 @@ export const storageService = {
             courseCounts: d.course_counts || {},
             description: d.description,
           }));
+          localStorage.setItem(KEYS.BATCH_DOCUMENTS, JSON.stringify(list));
+          return list;
         }
       } catch (err) {
         console.warn("Supabase getBatchGraduateFiles error:", err);
@@ -638,8 +642,8 @@ export const storageService = {
     if (isSupabaseConfigured() && supabase) {
       try {
         const { data, error } = await supabase.from("users").select("*").order("created_at", { ascending: false });
-        if (!error && data && data.length > 0) {
-          return data.map((d: any) => ({
+        if (!error && data) {
+          const list = data.map((d: any) => ({
             id: d.id,
             name: d.name,
             email: d.email,
@@ -648,6 +652,8 @@ export const storageService = {
             passwordHash: d.password_hash,
             salt: d.salt,
           }));
+          localStorage.setItem(KEYS.USERS, JSON.stringify(list));
+          return list;
         }
       } catch (err) {
         console.warn("Supabase getUsers error:", err);
