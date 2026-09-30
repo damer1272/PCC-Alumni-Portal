@@ -16,7 +16,7 @@ const STATUS_COLORS: Record<string, string> = {
   "Continuing Studies": "#8b5cf6",
 };
 
-const ALL_COURSE_CODES = ["BSIT", "BSBA", "BSA", "BSCrim", "BEEd", "BSEd", "BSN", "BSHRM"];
+const ALL_COURSE_CODES = ["BSIT", "BSBA", "BSA", "BSCrim", "BSEd"];
 
 export default function AdminDashboard() {
   const navigate = useNavigate();

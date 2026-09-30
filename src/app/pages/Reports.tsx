@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 const COLORS = ["#10b981", "#2563eb", "#ef4444", "#8b5cf6", "#f59e0b"];
 
-const ALL_COURSE_CODES = ["BSIT", "BSBA", "BSA", "BSCrim", "BEEd", "BSEd", "BSN", "BSHRM"];
+const ALL_COURSE_CODES = ["BSIT", "BSBA", "BSA", "BSCrim", "BSEd"];
 
 export default function Reports() {
   const [alumniList, setAlumniList] = useState<Alumni[]>([]);

@@ -50,10 +50,7 @@ export const COURSES = [
   "Bachelor of Science in Business Administration (BSBA)",
   "Bachelor of Science in Accountancy (BSA)",
   "Bachelor of Science in Criminology (BSCrim)",
-  "Bachelor of Elementary Education (BEEd)",
   "Bachelor of Secondary Education (BSEd)",
-  "Bachelor of Science in Nursing (BSN)",
-  "Bachelor of Science in Hotel & Restaurant Management (BSHRM)",
 ];
 
 export const YEARS = [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015];

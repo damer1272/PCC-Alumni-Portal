@@ -13,12 +13,9 @@ const DEFAULT_CSV_CONTENT = `Student ID,Full Name,Course,Batch Year
 2026-0102,Maria Clara Santos,Bachelor of Science in Accountancy (BSA),2026
 2026-0103,Pedro Penduko,Bachelor of Science in Criminology (BSCrim),2026
 2026-0104,Ana Marie Reyes,Bachelor of Science in Business Administration (BSBA),2026
-2026-0105,Mark Anthony Bautista,Bachelor of Science in Nursing (BSN),2026
-2026-0106,Sarah Geronimo,Bachelor of Elementary Education (BEEd),2026
-2026-0107,Jose Protasio Rizal,Bachelor of Secondary Education (BSEd),2026
-2026-0108,Grace Poe,Bachelor of Science in Hotel & Restaurant Management (BSHRM),2026`;
+2026-0105,Jose Protasio Rizal,Bachelor of Secondary Education (BSEd),2026`;
 
-// Comprehensive course identification function
+// Comprehensive course identification function for 5 PCC courses
 const identifyCourse = (val: any): string | null => {
   if (val === null || val === undefined) return null;
   const str = String(val).replace(/[^\x20-\x7E]/g, "").trim();
@@ -34,7 +31,7 @@ const identifyCourse = (val: any): string | null => {
     return null;
   }
 
-  // 1. Check parenthetical acronym e.g. (BSIT), (BSA), (BSCrim), (BSBA), (BSN), (BEEd), (BSEd), (BSHRM)
+  // 1. Check parenthetical acronym e.g. (BSIT), (BSA), (BSCrim), (BSBA), (BSEd)
   const match = str.match(/\(([^)]+)\)/);
   if (match && match[1]) {
     const code = match[1].trim().toUpperCase();
@@ -42,13 +39,10 @@ const identifyCourse = (val: any): string | null => {
     if (code.includes("BSA") || code.includes("ACCT")) return "BSA";
     if (code.includes("CRIM")) return "BSCrim";
     if (code.includes("BA") || code.includes("BUS")) return "BSBA";
-    if (code.includes("NSG") || code.includes("NURS")) return "BSN";
-    if (code.includes("BEED") || code.includes("ELEM")) return "BEEd";
-    if (code.includes("BSED") || code.includes("SEC")) return "BSEd";
-    if (code.includes("HRM") || code.includes("HOTEL") || code.includes("TOUR")) return "BSHRM";
+    if (code.includes("BSED") || code.includes("SEC") || code.includes("EDUC")) return "BSEd";
   }
 
-  // 2. Keyword pattern matching across all course names and acronyms
+  // 2. Keyword pattern matching across 5 course names and acronyms
   if (
     lower.includes("information technology") || lower.includes("bsit") ||
     lower.includes("computer science") || lower.includes("bscs") ||
@@ -80,30 +74,10 @@ const identifyCourse = (val: any): string | null => {
   }
 
   if (
-    lower.includes("nursing") || lower.includes("bsn") || lower.includes("bs n")
-  ) {
-    return "BSN";
-  }
-
-  if (
-    lower.includes("elementary education") || lower.includes("beed") ||
-    lower.includes("elem ed") || lower.includes("elementary") || lower.includes("b.e.ed")
-  ) {
-    return "BEEd";
-  }
-
-  if (
     lower.includes("secondary education") || lower.includes("bsed") ||
-    lower.includes("sec ed") || lower.includes("secondary") || lower.includes("b.s.ed")
+    lower.includes("sec ed") || lower.includes("education") || lower.includes("b.s.ed")
   ) {
     return "BSEd";
-  }
-
-  if (
-    lower.includes("hotel") || lower.includes("restaurant") || lower.includes("hospitality") ||
-    lower.includes("bshrm") || lower.includes("bshm") || lower.includes("tourism") || lower.includes("hrm")
-  ) {
-    return "BSHRM";
   }
 
   // Exact acronym match
@@ -112,10 +86,7 @@ const identifyCourse = (val: any): string | null => {
   if (cleanCode === "BSA") return "BSA";
   if (cleanCode === "BSCRIM") return "BSCrim";
   if (cleanCode === "BSBA") return "BSBA";
-  if (cleanCode === "BSN") return "BSN";
-  if (cleanCode === "BEED") return "BEEd";
-  if (cleanCode === "BSED") return "BSEd";
-  if (cleanCode === "BSHRM" || cleanCode === "HRM") return "BSHRM";
+  if (cleanCode === "BSED" || cleanCode === "EDUC") return "BSEd";
 
   return null;
 };
