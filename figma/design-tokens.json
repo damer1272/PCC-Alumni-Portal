@@ -1,0 +1,279 @@
+{
+  "PCC Alumni Portal": {
+    "color": {
+      "brand": {
+        "primary": {
+          "value": "#1a3a6b",
+          "type": "color",
+          "description": "Main navy — sidebar, primary buttons, avatars, links"
+        },
+        "primary-dark": {
+          "value": "#0d2850",
+          "type": "color",
+          "description": "Button hover state"
+        },
+        "secondary": {
+          "value": "#2d5a9e",
+          "type": "color",
+          "description": "Gradient end, chart bars, accents"
+        },
+        "sidebar-overlay": {
+          "value": "#0d1f3c",
+          "type": "color",
+          "description": "Register page left panel overlay (85% opacity)"
+        }
+      },
+      "surface": {
+        "page": {
+          "value": "#f0f4f8",
+          "type": "color",
+          "description": "Dashboard / app background"
+        },
+        "card": {
+          "value": "#ffffff",
+          "type": "color",
+          "description": "Cards, topbar, modals"
+        },
+        "input": {
+          "value": "#f9fafb",
+          "type": "color",
+          "description": "Input background (gray-50)"
+        },
+        "muted": {
+          "value": "#ececf0",
+          "type": "color",
+          "description": "Shadcn muted surface"
+        }
+      },
+      "text": {
+        "primary": {
+          "value": "#111827",
+          "type": "color",
+          "description": "Headings, body (gray-900)"
+        },
+        "secondary": {
+          "value": "#6b7280",
+          "type": "color",
+          "description": "Subtext (gray-500)"
+        },
+        "muted": {
+          "value": "#9ca3af",
+          "type": "color",
+          "description": "Labels, hints (gray-400)"
+        },
+        "on-dark": {
+          "value": "#F5F0E8",
+          "type": "color",
+          "description": "Cream text on login / cinematic screens"
+        },
+        "on-dark-muted": {
+          "value": "rgba(255, 255, 255, 0.55)",
+          "type": "color",
+          "description": "Secondary text on dark backgrounds"
+        },
+        "inverse": {
+          "value": "#ffffff",
+          "type": "color",
+          "description": "Text on primary buttons"
+        }
+      },
+      "border": {
+        "default": {
+          "value": "#e5e7eb",
+          "type": "color",
+          "description": "Card and input borders (gray-200)"
+        },
+        "subtle": {
+          "value": "#f3f4f6",
+          "type": "color",
+          "description": "Card borders (gray-100)"
+        },
+        "glass": {
+          "value": "rgba(255, 255, 255, 0.20)",
+          "type": "color",
+          "description": "Glass login panel border"
+        },
+        "sidebar": {
+          "value": "rgba(255, 255, 255, 0.10)",
+          "type": "color",
+          "description": "Sidebar dividers"
+        }
+      },
+      "status": {
+        "success": {
+          "value": "#16a34a",
+          "type": "color",
+          "description": "Employed badge (green-600)"
+        },
+        "success-bg": {
+          "value": "#f0fdf4",
+          "type": "color",
+          "description": "Employed badge background (green-50)"
+        },
+        "warning": {
+          "value": "#ca8a04",
+          "type": "color",
+          "description": "Pending badge (yellow-600)"
+        },
+        "warning-bg": {
+          "value": "#fefce8",
+          "type": "color",
+          "description": "Pending badge background (yellow-50)"
+        },
+        "error": {
+          "value": "#dc2626",
+          "type": "color",
+          "description": "Unemployed / destructive (red-600)"
+        },
+        "error-bg": {
+          "value": "#fef2f2",
+          "type": "color",
+          "description": "Error badge background (red-50)"
+        },
+        "info": {
+          "value": "#2563eb",
+          "type": "color",
+          "description": "Info / alumni role badge (blue-600)"
+        },
+        "info-bg": {
+          "value": "#eff6ff",
+          "type": "color",
+          "description": "Info badge background (blue-50)"
+        },
+        "purple": {
+          "value": "#7c3aed",
+          "type": "color",
+          "description": "Continuing studies / admin accents"
+        },
+        "purple-bg": {
+          "value": "#f5f3ff",
+          "type": "color",
+          "description": "Purple badge background"
+        }
+      },
+      "chart": {
+        "1": { "value": "#1a3a6b", "type": "color" },
+        "2": { "value": "#2d5a9e", "type": "color" },
+        "3": { "value": "#e74c3c", "type": "color" },
+        "4": { "value": "#8b5cf6", "type": "color" },
+        "5": { "value": "#f59e0b", "type": "color" }
+      },
+      "glass": {
+        "panel-bg": {
+          "value": "rgba(255, 255, 255, 0.10)",
+          "type": "color",
+          "description": "Glass login panel background"
+        },
+        "panel-button": {
+          "value": "rgba(255, 255, 255, 0.15)",
+          "type": "color",
+          "description": "Glass button / active tab"
+        }
+      }
+    },
+    "fontFamilies": {
+      "ui": {
+        "value": "Inter",
+        "type": "fontFamilies",
+        "description": "Body, forms, navigation, dashboards"
+      },
+      "display": {
+        "value": "Cormorant Garamond",
+        "type": "fontFamilies",
+        "description": "Login hero headlines (italic)"
+      },
+      "register-heading": {
+        "value": "Playfair Display",
+        "type": "fontFamilies",
+        "description": "Register sidebar headline"
+      }
+    },
+    "fontWeights": {
+      "light": { "value": "300", "type": "fontWeights" },
+      "regular": { "value": "400", "type": "fontWeights" },
+      "medium": { "value": "500", "type": "fontWeights" },
+      "semibold": { "value": "600", "type": "fontWeights" },
+      "bold": { "value": "700", "type": "fontWeights" }
+    },
+    "fontSize": {
+      "xs": { "value": "10", "type": "fontSizes", "description": "10px — nav labels, badges" },
+      "sm": { "value": "12", "type": "fontSizes", "description": "12px — captions, table cells" },
+      "base": { "value": "14", "type": "fontSizes", "description": "14px — body, inputs, buttons" },
+      "md": { "value": "16", "type": "fontSizes", "description": "16px — root font size" },
+      "lg": { "value": "18", "type": "fontSizes", "description": "18px — card stats" },
+      "xl": { "value": "20", "type": "fontSizes", "description": "20px — page titles" },
+      "2xl": { "value": "24", "type": "fontSizes", "description": "24px — dashboard greeting" },
+      "3xl": { "value": "30", "type": "fontSizes", "description": "30px — register heading" },
+      "hero-sm": { "value": "30", "type": "fontSizes", "description": "Login hero mobile" },
+      "hero-md": { "value": "48", "type": "fontSizes", "description": "Login hero tablet" },
+      "hero-lg": { "value": "60", "type": "fontSizes", "description": "Login hero desktop" },
+      "hero-xl": { "value": "72", "type": "fontSizes", "description": "Login hero large desktop" }
+    },
+    "lineHeights": {
+      "tight": { "value": "110%", "type": "lineHeights" },
+      "normal": { "value": "150%", "type": "lineHeights" },
+      "relaxed": { "value": "160%", "type": "lineHeights" }
+    },
+    "letterSpacing": {
+      "wide": { "value": "0.15em", "type": "letterSpacing", "description": "Uppercase nav labels" },
+      "wider": { "value": "0.2em", "type": "letterSpacing", "description": "Cinematic UI labels" }
+    },
+    "spacing": {
+      "1": { "value": "4", "type": "spacing" },
+      "2": { "value": "8", "type": "spacing" },
+      "3": { "value": "12", "type": "spacing" },
+      "4": { "value": "16", "type": "spacing" },
+      "5": { "value": "20", "type": "spacing" },
+      "6": { "value": "24", "type": "spacing" },
+      "7": { "value": "28", "type": "spacing" },
+      "8": { "value": "32", "type": "spacing" },
+      "10": { "value": "40", "type": "spacing" },
+      "12": { "value": "48", "type": "spacing" },
+      "16": { "value": "64", "type": "spacing" }
+    },
+    "borderRadius": {
+      "sm": { "value": "6", "type": "borderRadius", "description": "6px" },
+      "md": { "value": "8", "type": "borderRadius", "description": "8px — small badges" },
+      "lg": { "value": "10", "type": "borderRadius", "description": "10px — default shadcn" },
+      "xl": { "value": "12", "type": "borderRadius", "description": "12px — buttons, inputs, avatars" },
+      "2xl": { "value": "16", "type": "borderRadius", "description": "16px — cards" },
+      "full": { "value": "9999", "type": "borderRadius", "description": "Pills / notification dot" }
+    },
+    "sizing": {
+      "sidebar-expanded": { "value": "240", "type": "sizing", "description": "Sidebar width (w-60)" },
+      "sidebar-collapsed": { "value": "68", "type": "sizing", "description": "Collapsed sidebar" },
+      "topbar-height": { "value": "56", "type": "sizing", "description": "Approx topbar height" },
+      "avatar-sm": { "value": "32", "type": "sizing" },
+      "avatar-md": { "value": "36", "type": "sizing" },
+      "avatar-lg": { "value": "80", "type": "sizing" },
+      "avatar-xl": { "value": "96", "type": "sizing" },
+      "icon-sm": { "value": "16", "type": "sizing" },
+      "icon-md": { "value": "20", "type": "sizing" },
+      "glass-panel-width": { "value": "380", "type": "sizing", "description": "Login glass panel desktop" }
+    },
+    "boxShadow": {
+      "sm": {
+        "value": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+        "type": "boxShadow",
+        "description": "Card default shadow"
+      },
+      "md": {
+        "value": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)",
+        "type": "boxShadow",
+        "description": "Card hover / dropdown"
+      },
+      "xl": {
+        "value": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
+        "type": "boxShadow",
+        "description": "Glass login panel"
+      }
+    },
+    "opacity": {
+      "glass-blur": {
+        "value": "24",
+        "type": "other",
+        "description": "Backdrop blur in px (backdrop-blur-xl)"
+      }
+    }
+  }
+}

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PCC Alumni Portal — System Presentation Script & Technical Stack Overview</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    });
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, Arial, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.5;
+      color: #1e293b;
+      background: #f8fafc;
+      max-width: 8.5in;
+      margin: 0 auto;
+      padding: 0.5in 0.6in;
+    }
+    .print-btn-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 16px;
+    }
+    .print-btn {
+      background: linear-gradient(135deg, #FF8A3D, #ff7a22);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(255, 138, 61, 0.3);
+      transition: all 0.2s;
+    }
+    .print-btn:hover { background: #e66914; transform: translateY(-1px); }
+    .header-box {
+      background: linear-gradient(135deg, #0d1f3c, #1a3a6b);
+      color: white;
+      padding: 24px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 25px rgba(13, 31, 60, 0.15);
+    }
+    .header-box h1 { font-family: 'Cormorant Garamond', serif; font-size: 24pt; color: #fff; margin-bottom: 4px; }
+    .header-box p { font-size: 10.5pt; color: #cbd5e1; font-weight: 500; }
+    h2 {
+      font-size: 13pt;
+      color: #0d1f3c;
+      margin: 24px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 2.5px solid #FF8A3D;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    h2 .weight { font-size: 9pt; color: #64748b; font-weight: 600; }
+    h3 { font-size: 11pt; margin: 14px 0 6px; color: #1e293b; font-weight: 700; }
+    p { margin-bottom: 8px; }
+    .say {
+      background: #ffffff;
+      border-left: 4.5px solid #FF8A3D;
+      padding: 14px 16px;
+      margin: 10px 0 14px;
+      border-radius: 0 12px 12px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      font-size: 10.5pt;
+      line-height: 1.55;
+    }
+    .cue {
+      font-size: 9.5pt;
+      color: #b45309;
+      background: #fff7ed;
+      border: 1px solid #ffedd5;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-weight: 700;
+      margin: 8px 0 6px;
+      display: inline-block;
+    }
+    ul, ol { margin: 0 0 10px 20px; }
+    li { margin-bottom: 5px; }
+    .time-box {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 10pt;
+      color: #1e40af;
+      margin-bottom: 18px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.5pt;
+      margin: 12px 0;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    th, td { border: 1px solid #e2e8f0; padding: 8px 12px; text-align: left; }
+    th { background: #f1f5f9; font-weight: 700; color: #0f172a; }
+    .diagram-container {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 16px;
+      margin: 14px 0 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      text-align: center;
+    }
+    .page-break { page-break-before: always; }
+    footer {
+      margin-top: 30px;
+      font-size: 9pt;
+      color: #64748b;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 10px;
+      text-align: center;
+    }
+    @media print {
+      body { padding: 0.2in; background: white; max-width: 100%; }
+      .print-btn-bar { display: none; }
+      .header-box { background: #0d1f3c !important; color: white !important; -webkit-print-color-adjust: exact; }
+      .page-break { page-break-before: always; }
+      @page { margin: 0.5in; size: portrait; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="print-btn-bar">
+    <button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+  </div>
+
+  <div class="header-box">
+    <h1>PCC Alumni Portal</h1>
+    <p>Capstone Presentation Script & Technical Architecture Overview · Pagadian Capitol College, Inc.</p>
+  </div>
+
+  <div class="time-box">
+    <strong>⏱️ Presentation Time Guide (10–12 minutes total):</strong><br />
+    • Opening &amp; Project Rationale: 1 min<br />
+    • Core System Demonstration (Alumni &amp; Admin Features): 5 min<br />
+    • Batch Document Vault &amp; Graduate Files Archive: 2 min<br />
+    • Technical Architecture &amp; Technology Stack: 2 min<br />
+    • System Flowchart &amp; ERD: 1 min<br />
+    • Summary &amp; Q&amp;A Defense: 1 min
+  </div>
+
+  <h2>1. Opening &amp; Project Rationale <span class="weight">(Presentation Skills — 10%)</span></h2>
+  <div class="say">
+    "Good morning / good afternoon to our respected panelists, project advisor, and fellow students. My name is <strong>[Your Name]</strong>. Today, I am proud to present our capstone project: the <strong>Pagadian Capitol College Alumni Portal</strong>.
+    <br /><br />
+    <strong>The Background &amp; Problem:</strong> Institutions like Pagadian Capitol College need a reliable method to track graduate career progression, maintain historical batch masterlists for accreditation, and foster continuous networking among alumni after graduation.
+    <br /><br />
+    <strong>Our Solution:</strong> The PCC Alumni Portal is a modern, responsive web application featuring a dual-role architecture: a <strong>Facebook-inspired Alumni Social Shell</strong> for graduates, and a <strong>Batch Document Vault &amp; Control Center</strong> for college administrators."
+  </div>
+
+  <h2>2. System Demonstration &amp; Core Features <span class="weight">(System Functionality — 30%)</span></h2>
+  <p class="cue">[DEMO: Navigate through the Portal]</p>
+  <div class="say">
+    "Our system provides comprehensive functionality tailored for both Alumni and Administrators:
+    <br /><br />
+    <strong>A. Alumni Portal Highlights:</strong>
+    <ul>
+      <li><strong>Authentication &amp; Role Access:</strong> Dual-role sign-in switch (Alumni vs. Admin) with salted Web Crypto password security and validation feedback.</li>
+      <li><strong>Facebook-Style Alumni Profile:</strong> Clean profile featuring verified badges, overlap avatar picture with camera edit triggers, and an Intro box for education, employment, and social links.</li>
+      <li><strong>Contextual Modal Editing:</strong> Tabbed profile modal allowing alumni to update Bio Quotes, Personal Details, Social Media Links, and Avatars effortlessly.</li>
+      <li><strong>Career Tracking Timeline:</strong> Interactive employment timeline recording job position, company, location, employment status, and private/public salary settings.</li>
+      <li><strong>Alumni Directory &amp; Search:</strong> Filterable graduate directory searchable by degree program, batch year, and employment status.</li>
+      <li><strong>News &amp; Activity Feed:</strong> Combined stream of official campus announcements and alumni journey updates with endorsement counters.</li>
+    </ul>
+
+    <strong>B. Admin Control Center &amp; Batch Document Vault:</strong>
+    <ul>
+      <li><strong>Admin Dashboard:</strong> Real-time charts for graduate employment distribution, course statistics, and batch counts built with Recharts.</li>
+      <li><strong>Batch Graduate Document Storage &amp; Archive:</strong> Dedicated repository enabling admins to upload, store, organize, preview, and download official PDF graduate rosters (.pdf) and Excel masterlists (.xlsx, .xls, .csv) grouped by graduation batch year.</li>
+      <li><strong>Smart Masterlist Parser:</strong> Automatically parses graduate masterlists (LAST NAME, FIRST NAME, MID NAME) and imports graduates directly into the directory with celebratory feedback.</li>
+      <li><strong>Manage Announcements &amp; Reports:</strong> Tools to publish campus announcements and export CSV reports.</li>
+    </ul>"
+  </div>
+
+  <div class="page-break"></div>
+
+  <h2>3. Complete Technology Stack Reference <span class="weight">(Technical Knowledge — 25%)</span></h2>
+  <p>Below is the complete technology stack used in building the Pagadian Capitol College Alumni Portal:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Layer / Subsystem</th>
+        <th>Technology / Library</th>
+        <th>Version</th>
+        <th>Purpose &amp; Implementation Detail</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Core Library</strong></td>
+        <td>React</td>
+        <td>v19.2</td>
+        <td>Declarative component-based UI architecture with TypeScript type safety.</td>
+      </tr>
+      <tr>
+        <td><strong>Language</strong></td>
+        <td>TypeScript</td>
+        <td>v7.0</td>
+        <td>Enforces strict data interfaces (`Alumni`, `ProfileData`, `BatchDocument`, `UserSession`).</td>
+      </tr>
+      <tr>
+        <td><strong>Build Tool</strong></td>
+        <td>Vite</td>
+        <td>v6.3</td>
+        <td>Next-gen frontend build tool providing lightning-fast HMR and optimized production bundling.</td>
+      </tr>
+      <tr>
+        <td><strong>Routing</strong></td>
+        <td>React Router</td>
+        <td>v7.13</td>
+        <td>Client-side routing with nested layouts (`MainLayout`, `AlumniShell`, `AdminShell`).</td>
+      </tr>
+      <tr>
+        <td><strong>Styling</strong></td>
+        <td>Tailwind CSS</td>
+        <td>v4.1</td>
+        <td>Modern utility-first styling engine with glassmorphic backdrop filters and custom CSS tokens.</td>
+      </tr>
+      <tr>
+        <td><strong>Animations</strong></td>
+        <td>Motion (Framer)</td>
+        <td>v12.23</td>
+        <td>Micro-animations for modal dialogs, tab transitions, dropzone hover states, and drawer menus.</td>
+      </tr>
+      <tr>
+        <td><strong>Data Visualization</strong></td>
+        <td>Recharts</td>
+        <td>v2.15</td>
+        <td>Interactive responsive Pie Charts and Bar Charts on the Admin Dashboard.</td>
+      </tr>
+      <tr>
+        <td><strong>Iconography</strong></td>
+        <td>Lucide React</td>
+        <td>v0.487</td>
+        <td>Consistent UI icons for navigation, file badges (PDF, Excel), and action buttons.</td>
+      </tr>
+      <tr>
+        <td><strong>Toast Notifications</strong></td>
+        <td>Sonner</td>
+        <td>v2.0</td>
+        <td>Non-intrusive pop-up notifications for user feedback and file uploads.</td>
+      </tr>
+      <tr>
+        <td><strong>Security / Crypto</strong></td>
+        <td>Web Crypto API</td>
+        <td>Native</td>
+        <td>SHA-256 salted password hashing (`hashPassword`, `generateSalt`, `generateSessionToken`).</td>
+      </tr>
+      <tr>
+        <td><strong>Data Persistence</strong></td>
+        <td>LocalStorage Storage Service</td>
+        <td>Custom</td>
+        <td>Simulates full relational CRUD database operations in `storage.ts` with zero backend latency.</td>
+      </tr>
+      <tr>
+        <td><strong>Interactive Effects</strong></td>
+        <td>Canvas Confetti</td>
+        <td>v1.9</td>
+        <td>Celebratory confetti particle animations on successful batch imports and uploads.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>4. System Architecture Flowchart</h2>
+  <div class="diagram-container">
+    <pre class="mermaid">
+flowchart TD
+    Start([User Opens PCC Alumni Portal]) --> AuthCheck{Sign In / Register}
+    
+    AuthCheck -->|Alumni Sign In| AlumniShell[Alumni Portal Layout]
+    AuthCheck -->|Admin Sign In| AdminShell[Admin Control Center Layout]
+    
+    subgraph Alumni Portal
+        AlumniShell --> Dash[Alumni Dashboard]
+        AlumniShell --> Profile[My Profile - Facebook Style]
+        AlumniShell --> Career[Career Tracking Timeline]
+        AlumniShell --> Directory[Alumni Directory & Search]
+        AlumniShell --> News[News & Journey Feed]
+    end
+    
+    subgraph Admin Control Center
+        AdminShell --> AdminDash[Admin Dashboard Analytics]
+        AdminShell --> ManageAlumni[Manage Alumni Directory]
+        AdminShell --> BatchVault[Batch Graduate Document Vault]
+        AdminShell --> Announcements[Manage Announcements]
+        AdminShell --> Reports[Reports & Export]
+    end
+    
+    BatchVault --> UploadFile[Upload PDF / Excel / CSV per Batch]
+    UploadFile --> StoreVault[Store File in Document Archive]
+    UploadFile -->|Optional| ParseRecords[Parse Spreadsheet to Directory]
+    </pre>
+  </div>
+
+  <h2>5. Conclusion &amp; Q&amp;A Defense Summary <span class="weight">(15%)</span></h2>
+  <div class="say">
+    "In conclusion, the <strong>PCC Alumni Portal</strong> successfully addresses graduate tracking and document archiving for Pagadian Capitol College. It combines an engaging alumni network with an enterprise-grade admin vault for PDF and Excel masterlists.
+    <br /><br />
+    Thank you very much for your time and attention. We are now ready to take your questions."
+  </div>
+
+  <footer>
+    Pagadian Capitol College, Inc. · PCC Alumni Portal Capstone Defense Presentation Script &amp; System Manual
+  </footer>
+
+</body>
+</html>

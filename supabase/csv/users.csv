@@ -1,0 +1,5 @@
+id,name,email,role,status,password_hash,salt
+1,PCC Admin,admin@pcc.edu.ph,Admin,Active,,
+2,Regie,regie@pcc.edu.ph,Alumni,Active,,
+3,Jhonamery,jhonamery@pcc.edu.ph,Alumni,Active,,
+4,Danilo,danilo@pcc.edu.ph,Alumni,Active,,
